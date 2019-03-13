@@ -142,10 +142,10 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
-          // Process JS with Babel.
+          //Process JS with Babel.
           {
             test: /\.(js|jsx|mjs)$/,
-            include: [ paths.nferxCore, paths.appSrc ],
+            include: [ paths.appSrc ],
             loader: require.resolve('babel-loader'),
             options: {
               compact: true,
@@ -179,7 +179,7 @@ module.exports = {
                       loader: require.resolve('css-loader'),
                       options: {
                         importLoaders: 1,
-                        minimize: true,
+                        minimize: false,
                         sourceMap: shouldUseSourceMap,
                       },
                     },
