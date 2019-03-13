@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import InfiniteCarousel from 'react-leaf-carousel'
 import { withStyles } from '@material-ui/core/styles'
-import DialogTitle from '@material-ui/core/DialogTitle'
+import Tooltip from '@material-ui/core/Tooltip'
 import Dialog from '@material-ui/core/Dialog'
+import LinkIcon from '@material-ui/icons/Link'
+import Grid from '@material-ui/core/Grid'
 import ImageAsync from "react-image-async"
 import { getGifsById } from './../../Api'
 import ImageLoading from './../../images/image-loading.gif'
@@ -10,18 +12,41 @@ import './CarouselCustom.css'
 
 const styles = theme => ({
     paper: {
-      position: 'absolute',
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing.unit * 4,
-      outline: 'none',
-      top: '50%',
-      left: '50%',
-      width: 'auto',
-      height: 'auto',
-      marginTop: '-250px', /* Half the height */
-      marginLeft: '-250px',/* Half the width */
+      margin: '0 auto !important',
+      padding: '1rem',
+      backgroundColor: '#cccccc'
     },
+    fillContainer:{
+      display: 'flex',
+      justifyContent: 'left',
+      alignItems: 'flex-start',
+      overflow: 'hidden',
+    },
+    fillImage:{
+      objectFit: 'cover',
+      minWidth: '100%',
+      minHeight: '100%',
+      borderRadius: 7,
+      width:'18rem !important',
+    },
+    dialogStyle:{
+        backgroundColor: '#191616c4',
+    },
+    textFontSize:{
+      fontSize: '1rem',
+      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+    },
+    icon: {
+      margin: theme.spacing.unit,
+      fontSize: 32,
+    },
+    extraInfo:{
+      color: 'rgba(0, 0, 0, 0.87)',
+      fontSize: '1rem',
+      fontWeight: 500,
+      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+      lineHeight: '1.16667em'
+    }
   });
 
 class Carousel extends Component {
@@ -90,10 +115,23 @@ class Carousel extends Component {
                     })}
                 </InfiniteCarousel>
                 {!this.props.checkEmptyObject(this.state.data)?
-                <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.open}>
-                    <DialogTitle id="simple-dialog-title">{data.title}</DialogTitle>
-                    <div>
-                        <img src={data.images.fixed_height_small.url} alt='modalImage'/>
+                <Dialog onClose={this.handleClose} maxWidth='lg' aria-labelledby="simple-dialog-title" open={this.state.open} className={classes.dialogStyle}>
+                    <div className={classes.paper}>
+                        <Grid container className={classes.demo} justify="center" spacing={24}>
+                            <Grid item key={1} xs={6} className={classes.fillContainer}>
+                                <ImageAsync src={data.images.original.url}>
+                                    {({ loaded, error }) =>
+                                        loaded ? <a href={data.url} target='_blank'><img src={data.images.original.url} alt='modalImage' className={classes.fillImage}/></a> :  <img src={ImageLoading}  className={classes.fillImage} alt='loadingimage'/>
+                                    }
+                                </ImageAsync>
+                            </Grid>
+                            <Grid item key={2} xs={6}>
+                                {data.source.length !==0 ?<Tooltip title="Open Source"><a style={{float:'right'}} href={data.source} target='_blank'><LinkIcon className={classes.icon}/></a></Tooltip>:null}<br/>
+                                <h2 className={classes.extraInfo}>{data.title}</h2><br/>
+                                <span className={classes.textFontSize}><b>ID</b>: {data.id}</span><br/>
+                                <span className={classes.textFontSize}><b>Rating</b>: {data.rating}</span><br/>
+                            </Grid>
+                        </Grid>
                     </div>
                 </Dialog>:null}
             </>
