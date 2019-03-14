@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import Dialog from '@material-ui/core/Dialog'
 import LinkIcon from '@material-ui/icons/Link'
+import ShareIcon from '@material-ui/icons/Share'
 import Grid from '@material-ui/core/Grid'
 import ImageAsync from "react-image-async"
 import { getGifsById } from './../../Api'
@@ -39,6 +40,10 @@ const styles = theme => ({
     icon: {
       margin: theme.spacing.unit,
       fontSize: 32,
+    },
+    shareIcon:{
+        margin: theme.spacing.unit,
+        fontSize: 22,
     },
     extraInfo:{
       color: 'rgba(0, 0, 0, 0.87)',
@@ -126,7 +131,8 @@ class Carousel extends Component {
                                 </ImageAsync>
                             </Grid>
                             <Grid item key={2} xs={6}>
-                                {data.source.length !==0 ?<Tooltip title="Open Source"><a style={{float:'right'}} href={data.source} target='_blank'><LinkIcon className={classes.icon}/></a></Tooltip>:null}<br/>
+                                {data.source.length !==0 ?<Tooltip title="Open Source"><a style={{float:'right'}} href={data.source} target='_blank'><LinkIcon className={classes.icon}/></a></Tooltip>:null}
+                                <Tooltip title="Share on whatsapp"><a href={`whatsapp://send?text=${encodeURIComponent(data.url)}`} target='_blank' style={{marginTop:'0.4rem', float:'right'}}><ShareIcon className={classes.shareIcon} /></a></Tooltip><br/>
                                 <h2 className={classes.extraInfo}>{data.title}</h2><br/>
                                 <span className={classes.textFontSize}><b>ID</b>: {data.id}</span><br/>
                                 <span className={classes.textFontSize}><b>Rating</b>: {data.rating}</span><br/>
